@@ -1,6 +1,11 @@
 # CCTV-py
 CCTV Program in python made for raspberry pi
 
+
+# Todo
+- [ ] Make a server to receive the data files
+- [ ] Make a client to send the data files to the server
+
 # How did this project come about?
 1. Want to have a CCTV to monitor our front door, but CCTVs are very pricey
 1. We have an old RaspPi lying around unused
