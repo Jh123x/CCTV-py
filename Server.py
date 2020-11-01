@@ -9,8 +9,10 @@ class Server:
         self.addr = (ip, port)
         self.mutex = mp.Semaphore(1)
         self.count = 0
+        self.closed = False
 
     def get_addr(self):
+        """Get the address, port"""
         return self.addr
 
     def bind(self):
@@ -27,9 +29,17 @@ class Server:
 
         #Create a video writer
         vid_writer = cv2.VideoWriter(f'output{count}.avi', cv2.VideoWriter_fourcc(*'XVID'), 20.0, (640,480))
-        while soc.connect_ex(self.addr) == 0:
-            data = pickle.loads(soc.recv(2048))
+        while not self.closed:
+            data = packet = soc.recv(4096)
+            if data:
+                self.closed = True
+            data = pickle.loads(data)
             vid_writer.write(data)
+
+        #Decrement count
+        self.mutex.acquire(True)
+        self.count -= 1
+        self.mutex.release()
 
         #Close the vidwrite
         vid_writer.release()
@@ -47,3 +57,7 @@ class Server:
             self.process(soc)
             
 
+if __name__ == "__main__":
+    server = Server("localhost", 1234)
+    server.bind()
+    server.mainloop()
