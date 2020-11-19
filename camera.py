@@ -30,7 +30,7 @@ class Camera:
         """The mainloop to poll for the frames on the camera"""
 
         #Capture object
-        self.cap = cv2.VideoCapture(self.src)
+        self.cap = cv2.VideoCapture(self.src, cv2.CAP_FFMPEG)
         
         while (self.status):
             # Capture frame-by-frame
@@ -84,7 +84,7 @@ def main() -> None:
     queue = initialise()
 
     #Set the source
-    src = 'rtsp://192.168.1.158:8554/stream'
+    src = 'tcp://192.168.1.158:1234/'
 
     #Start polling the camera
     start_poll(src, queue)
