@@ -34,7 +34,7 @@ class Camera:
         
         while (self.status):
             # Capture frame-by-frame
-            ret, frame = self.cap.read()
+            _, frame = self.cap.read()
             self.queue.put(frame)
     
 def show(queue: Queue) -> None:
@@ -66,8 +66,7 @@ def run_camera(queue, src:int) -> None:
 
 def initialise() -> Queue: 
     #Create a process safequeue
-    queue = Queue()
-    return queue
+    return Queue()
 
 def start_poll(src:int, queue:Queue, daemon:bool = True) -> None:
     """Start the polling of the camera"""
@@ -85,10 +84,10 @@ def main() -> None:
     queue = initialise()
 
     #Set the source
-    src = 0
+    src = 'rtsp://192.168.1.158:8554/stream'
 
     #Start polling the camera
-    start_poll(src, queue, True)
+    start_poll(src, queue)
 
     #Show the results of the queue
     show(queue)

@@ -39,7 +39,7 @@ def main():
     client.connect()
     while True:
         image = queue.get()
-        retval, buffer = cv2.imencode('.jpg', image)
+        retval, buffer = cv2.imencode('', image)
         client.send(buffer)
 
     client.close()
